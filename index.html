@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda</title>
+</head>
+<body>
+    <script>
+        let agenda = []
+
+     function showMenu() {
+            return parseInt (prompt (
+                `
+                    Agenda
+
+        [1] -> Adicionar Contato
+        [2] -> Visualizar Contato
+        [3] -> Editar Contato
+        [4] -> Excluir Contato
+        [5] -> Sair do Programa
+        `
+        ));
+    }
+
+  
+//Método: Método post (Verbo HTTP para cadastrar)
+     function addContato() {
+        const nome = prompt("Informe o nome do contato: ");
+        const numero = prompt("Informe o numero do contato: ");
+        const email = prompt("Informe o email do contato: ");
+        const dataHoraAtual = new Date();
+        const data = dataHoraAtual.toLocaleString();
+     
+        
+             if (nome == "" ||numero == "" || email == "" ) {
+                    alert("o nome, o numero e o email são obrigatórios")
+
+                    return;
+             }
+
+                agenda.push({nome,numero,email,data});
+
+                console.log(agenda);
+            }
+
+//Método de listagem de usuário => (Verbo HTTP: GET)
+    function listContato() {
+        let listContato = "";
+
+    agenda.forEach((dataContato) => {
+        listContato += `Nome: ${dataContato.nome}, Numero: ${dataContato.numero}, ${dataContato.email}, ${dataContato.data}`
+    })
+
+     alert("Lista de usuários cadastrados " + listContato);
+    }
+
+
+ //Método de atualizar usuário => (Verbo HTTP: PUT)
+    function updateContatoInfo() {
+            //nome a ser procurado dentro do array
+            const findEmail = prompt("Informe o email que você deseja atualizar: ")
+
+//método find para validar se o email que o usuário informou está dentro do meu array de usuários
+            const usuarioEncontrado = agenda.find(user => 
+                user.email == findEmail
+            );
+ //se não encontrar nada então ele cai nesa validação e parando a nossa função.
+            if(!usuarioEncontrado) {
+                alert ("não encontrei nada");
+
+                return;
+            }
+//se deu certo, o sistema vai pedir para o usuário informar o novo nome e email a ser atualizado.
+
+            const novoNome = prompt("Insira o novo nome: ");
+            const novoNumero = prompt("Insira o novo numero: ");
+            const novoEmail = prompt("Informe o novo email: ");
+//substitui o nome antigo pelo nome novo
+            if (novoNome) {
+                usuarioEncontrado.nome = novoNome;
+            }
+
+//substitui o numero antigo pelo novo
+            if (novoNumero) {
+                usuarioEncontrado.email = novoEmail;
+            }
+//substitui o email antigo pelo novo
+            if (novoEmail) {
+                usuarioEncontrado.email = novoEmail;
+            }
+            
+//retorna que deu tudo certo
+            alert ("Contato foi atualizado com sucesso!")
+        }
+         
+
+
+//Método delete => (Verbo HTTP: Delete)
+   function deleteContato(){
+            const findNome = prompt("Informe o nome que deseja deletar: ");
+            const indiceUsuarioEncontrado = agenda.findIndex(contato => contato.nome === 
+            findNome);
+
+            if (indiceUsuarioEncontrado === -1) {
+                alert("Usuario não cadastrado!");
+
+                return;
+            }
+            const confirm = window.confirm("Você deseja remover o contato? " + findNome + "?");
+            if (confirm) {
+        
+            agenda.splice(indiceUsuarioEncontrado, 1);
+                alert("Contato foi deletado com sucesso!");
+           
+            
+    }
+   }
+    let loopBreak = true
+
+    while (loopBreak) {
+        switch (showMenu()) {
+            case 1:
+            addContato();
+            break;
+        case 2:
+            listContato();
+            break;
+        case 3:
+            updateContatoInfo();
+            break;
+        case 4:
+            deleteContato();
+            break;
+        case 5:
+            alert("Saindo do programa... Até mais!")
+            loopBreak = false
+            break;    
+
+        default:
+            alert("Opção inválida");
+            break;
+     }
+    }
+   </script>  
+    
+  </body>
+</html>
